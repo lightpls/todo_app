@@ -1,6 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:fast_app_base/screen/opensource/s_opensource.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
@@ -106,7 +105,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
             },
           ),
           const Line(),
-          isSmallScreen(context) ? const Height(10) : const EmptyExpanded(),
+          isSmallScreen(context) ? const Height(10) : spacer,
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: ModeSwitch(
@@ -182,7 +181,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         }
                         await context.setLocale(Language.find(value.toLowerCase()).locale);
                       },
-                      value: describeEnum(currentLanguage).capitalizeFirst,
+                      value: currentLanguage.name.capitalizeFirst,
                       underline: const SizedBox.shrink(),
                       elevation: 1,
                       borderRadius: BorderRadius.circular(10),
@@ -196,12 +195,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
   DropdownMenuItem<String> menu(Language language) {
     return DropdownMenuItem(
-      value: describeEnum(language).capitalizeFirst,
+      value: language.name.capitalizeFirst,
       child: Row(
         children: [
           flag(language.flagPath),
           const Width(8),
-          describeEnum(language)
+          language.name
               .capitalizeFirst!
               .text
               .color(Theme.of(context).textTheme.bodyLarge?.color)
