@@ -52,12 +52,14 @@ class MainScreenState extends State<MainScreen>
             child: pages,
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            context.holder.addTodo();
-          },
-          child: const Icon(EvaIcons.plus),
-        ),
+        floatingActionButton: _currentTab == TabItem.search
+            ? null
+            : FloatingActionButton(
+                onPressed: () async {
+                  context.holder.addTodo();
+                },
+                child: const Icon(EvaIcons.plus),
+              ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
       ),
     );
