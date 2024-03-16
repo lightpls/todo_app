@@ -10,6 +10,8 @@ abstract class AbstractThemeColors {
 
   Color get seedColor => const Color(0xff26ff8c);
 
+  Color get searchColor => const Color(0xff8b26ff);
+
   Color get veryBrightGrey => AppColors.brightGrey;
 
   Color get drawerBg => const Color.fromARGB(255, 255, 255, 255);
