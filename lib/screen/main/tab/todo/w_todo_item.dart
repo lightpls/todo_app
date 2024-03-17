@@ -1,24 +1,22 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/common/dart/extension/datetime_extension.dart';
-import 'package:fast_app_base/common/widget/w_rounded_container.dart';
+import 'package:fast_app_base/data/memory/todo_data.dart';
+import 'package:fast_app_base/screen/main/tab/todo/w_todo_status.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../common/widget/w_rounded_container.dart';
 import '../../../../data/memory/vo_todo.dart';
-import 'w_todo_status.dart';
 
-class TodoItem extends StatelessWidget {
+class TodoItem extends StatelessWidget with TodoDataProvider {
   final Todo todo;
 
-  const TodoItem(this.todo, {super.key});
+  TodoItem({super.key, required this.todo});
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(todo.id),
-      onDismissed: (direction) {
-        context.holder.removeTodo(todo);
-      },
       background: RoundedContainer(
         color: context.appColors.removeTodoBg,
         child: const Row(
@@ -45,27 +43,28 @@ class TodoItem extends StatelessWidget {
           ],
         ),
       ),
+      onDismissed: (direction) {
+        todoData.removeTodo(todo);
+      },
       child: RoundedContainer(
-          margin: const EdgeInsets.only(bottom: 6),
-          color: context.appColors.itemBackground,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              todo.dueDate.relativeDays.text.make(),
-              Row(
-                children: [
-                  TodoStatusWidget(todo),
-                  Expanded(child: todo.title.text.size(20).medium.make()),
-                  IconButton(
-                    onPressed: () async {
-                      context.holder.editTodo(todo);
-                    },
-                    icon: const Icon(EvaIcons.edit),
-                  ),
-                ],
-              )
-            ],
-          ).pOnly(top: 15, right: 15, left: 5, bottom: 10)),
+        margin: const EdgeInsets.symmetric(vertical: 3),
+        color: context.appColors.itemBackground,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            todo.dueDate.relativeDays.text.size(10).medium.make(),
+            Row(
+              children: [
+                TodoStatusWidget(todo),
+                Expanded(child: todo.title.text.size(20).medium.make()),
+                IconButton(
+                    onPressed: () => todoData.editTodo(todo),
+                    icon: const Icon(EvaIcons.editOutline)),
+              ],
+            ),
+          ],
+        ).pOnly(top: 15, right: 15, bottom: 10, left: 5),
+      ),
     );
   }
 }

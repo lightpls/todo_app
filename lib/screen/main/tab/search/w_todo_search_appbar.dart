@@ -1,11 +1,8 @@
 import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/common/util/app_keyboard_util.dart';
 import 'package:fast_app_base/common/widget/w_text_field_with_delete.dart';
+import 'package:fast_app_base/data/memory/todo_data.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../../../common/widget/w_arrow.dart';
-import 'search_history_data.dart';
 
 class TodoSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final TextEditingController controller;
@@ -19,13 +16,11 @@ class TodoSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<StatefulWidget> createState() => _TodoSearchAppBarState();
 }
 
-class _TodoSearchAppBarState extends State<TodoSearchAppBar> {
-
-  late final searchData = Get.find<SearchHistoryData>();
+class _TodoSearchAppBarState extends State<TodoSearchAppBar> with TodoDataProvider{
+  final node = FocusNode();
 
   @override
   void initState() {
-    Get.put(SearchHistoryData());
     widget.controller.addListener(() {
 
     });
@@ -34,38 +29,24 @@ class _TodoSearchAppBarState extends State<TodoSearchAppBar> {
   }
 
   @override
-  void dispose() {
-    Get.delete<SearchHistoryData>();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Tap(
-            onTap: () => Nav.pop(context),
-            child: const SizedBox(
-                width: 56,
-                height: kToolbarHeight,
-                child: Arrow(
-                  direction: AxisDirection.left,
-                ))),
         Expanded(
           child: TextFieldWithDelete(
             controller: widget.controller,
             textInputAction: TextInputAction.search,
+            focusNode: node,
             texthint: '검색어를 입력하세요',
-            onEditingComplete: (){
-              searchData.addHistory(widget.controller.text);
+            onEditingComplete: () {
+              todoData.searchTodo(widget.controller.text);
               widget.controller.text = '';
               AppKeyboardUtil.hide(context);
             },
-          ).pOnly(top: 6),
-        ),//
-        width20,
+          ).pOnly(left: 10, top: 6),
+        ),
+        const Icon(Icons.search),
       ],
     );
   }
 }
-

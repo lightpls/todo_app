@@ -1,8 +1,8 @@
 import 'package:fast_app_base/common/common.dart';
-import 'package:fast_app_base/common/dart/extension/color_extension.dart';
 import 'package:flutter/material.dart';
 
-import 'w_search_result.dart';
+import 'w_search_history.dart';
+import 'w_search_list.dart';
 import 'w_todo_search_appbar.dart';
 
 class SearchFragment extends StatefulWidget {
@@ -18,12 +18,12 @@ class _SearchFragmentState extends State<SearchFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColors.searchColor.getSwatchByBrightness(100),
-      appBar: TodoSearchAppBar(controller: controller,),
-      body: ListView(
+      backgroundColor: context.appColors.searchColor.getSwatchByBrightness(200),
+      appBar: TodoSearchAppBar(controller: controller),
+      body: Column(
         children: [
-          SearchResult(),
-          const Placeholder(),
+          SearchHistory(controller: controller),
+          const SearchList(),
         ],
       ),
     );

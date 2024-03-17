@@ -1,6 +1,6 @@
 import 'package:fast_app_base/common/common.dart';
+import 'package:fast_app_base/common/widget/transparent_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'transparent_scaffold.dart';
 
 class BottomDialogScaffold extends StatelessWidget {
   final Widget body;

@@ -1,5 +1,6 @@
-enum TodoStatus{
+enum TodoStatus {
   incomplete,
   ongoing,
   complete,
+  unknown,
 }

@@ -1,4 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:fast_app_base/data/memory/todo_data.dart';
 import 'package:fast_app_base/screen/main/tab/tab_item.dart';
 import 'package:fast_app_base/screen/main/tab/tab_navigator.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +15,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen>
-    with SingleTickerProviderStateMixin {
-  TabItem _currentTab = TabItem.todo;
-  final tabs = [TabItem.todo, TabItem.search];
+    with SingleTickerProviderStateMixin, TodoDataProvider {
+  TabItem _currentTab = TabItem.home;
+  final tabs = [TabItem.home, TabItem.search];
   final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
   int get _currentIndex => tabs.indexOf(_currentTab);
 
-  GlobalKey<NavigatorState> get _currentTabNavigationKey =>
-      navigatorKeys[_currentIndex];
+  GlobalKey<NavigatorState> get _currentTabNavigationKey => navigatorKeys[_currentIndex];
 
   bool get extendBody => true;
 
@@ -37,37 +37,32 @@ class MainScreenState extends State<MainScreen>
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: isRootPage,
-      onPopInvoked: _handleBackPressed,
+      //onPopInvoked: _handleBackPressed,
+      onPopInvoked: (val) {},
       child: Scaffold(
         extendBody: extendBody,
         //bottomNavigationBar 아래 영역 까지 그림
         drawer: const MenuDrawer(),
         body: Container(
-          color: context.appColors.seedColor.getMaterialColorValues[200],
-          padding: EdgeInsets.only(
-              bottom: extendBody ? 60 - bottomNavigationBarBorderRadius : 0),
+          color: context.appColors.seedColor.getSwatchByBrightness(100),
+          padding: EdgeInsets.only(bottom: extendBody ? 60 - bottomNavigationBarBorderRadius : 0),
           child: SafeArea(
             bottom: !extendBody,
             child: pages,
           ),
         ),
-        floatingActionButton: _currentTab == TabItem.search
-            ? null
-            : FloatingActionButton(
+        floatingActionButton: _currentIndex == 0
+            ? FloatingActionButton(
                 onPressed: () async {
-                  context.holder.addTodo();
+                  todoData.addTodo(context);
                 },
                 child: const Icon(EvaIcons.plus),
-              ),
+              )
+            : null,
         bottomNavigationBar: _buildBottomNavigationBar(context),
       ),
     );
   }
-
-  bool get isRootPage =>
-      _currentTab == TabItem.todo &&
-      _currentTabNavigationKey.currentState?.canPop() == false;
 
   IndexedStack get pages => IndexedStack(
       index: _currentIndex,
@@ -81,24 +76,11 @@ class MainScreenState extends State<MainScreen>
               ))
           .toList());
 
-  void _handleBackPressed(bool didPop) {
-    if (!didPop) {
-      if (_currentTabNavigationKey.currentState?.canPop() == true) {
-        Nav.pop(_currentTabNavigationKey.currentContext!);
-        return;
-      }
-
-      if (_currentTab != TabItem.todo) {
-        _changeTab(tabs.indexOf(TabItem.todo));
-      }
-    }
-  }
-
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         boxShadow: [
-          BoxShadow(color: Colors.black26, spreadRadius: 0, blurRadius: 10),
+          BoxShadow(color: Colors.black12, spreadRadius: 3, blurRadius: 10),
         ],
       ),
       child: ClipRRect(
@@ -137,15 +119,13 @@ class MainScreenState extends State<MainScreen>
     });
   }
 
-  BottomNavigationBarItem bottomItem(bool activate, IconData iconData,
-      IconData inActivateIconData, String label) {
+  BottomNavigationBarItem bottomItem(
+      bool activate, IconData iconData, IconData inActivateIconData, String label) {
     return BottomNavigationBarItem(
         icon: Icon(
           key: ValueKey(label),
           activate ? iconData : inActivateIconData,
-          color: activate
-              ? context.appColors.iconButton
-              : context.appColors.iconButtonInactivate,
+          color: activate ? context.appColors.iconButton : context.appColors.iconButtonInactivate,
         ),
         label: label);
   }

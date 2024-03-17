@@ -83,19 +83,38 @@ class AppPreferences {
 
   static T getValue<T>(PreferenceItem<T> item) {
     final String key = getPrefKey(item);
-    switch (T) {
-      case int:
-        return _prefs.getInt(key) as T? ?? item.defaultValue;
-      case String:
-        return _prefs.getString(key) as T? ?? item.defaultValue;
-      case double:
-        return _prefs.getDouble(key) as T? ?? item.defaultValue;
-      case bool:
-        return _prefs.getBool(key) as T? ?? item.defaultValue;
-      case const (List<String>):
-        return _prefs.getStringList(key) as T? ?? item.defaultValue;
-      default:
-        return transform(T, _prefs.getString(key)) ?? item.defaultValue;
+    final isNullable = checkIsNullable<T>();
+
+    if (isNullable) {
+      switch (T.toString()) {
+        case "int?":
+          return _prefs.getInt(key) as T ?? item.defaultValue;
+        case "String?":
+          return _prefs.getString(key) as T ?? item.defaultValue;
+        case "double?":
+          return _prefs.getDouble(key) as T ?? item.defaultValue;
+        case "bool?":
+          return _prefs.getBool(key) as T ?? item.defaultValue;
+        case "List<String>?":
+          return _prefs.getStringList(key) as T;
+        default:
+          return transform(T, _prefs.getString(key)) ?? item.defaultValue;
+      }
+    } else {
+      switch (T) {
+        case int:
+          return _prefs.getInt(key) as T? ?? item.defaultValue;
+        case String:
+          return _prefs.getString(key) as T? ?? item.defaultValue;
+        case double:
+          return _prefs.getDouble(key) as T? ?? item.defaultValue;
+        case bool:
+          return _prefs.getBool(key) as T? ?? item.defaultValue;
+        case const (List<String>):
+          return _prefs.getStringList(key) as T? ?? item.defaultValue;
+        default:
+          return transform(T, _prefs.getString(key)) ?? item.defaultValue;
+      }
     }
   }
 
