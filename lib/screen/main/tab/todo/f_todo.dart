@@ -28,7 +28,7 @@ class _TodoFragmentState extends State<TodoFragment> {
               )
             ],
           ),
-          Expanded(child: TodoList().pSymmetric(h: 15)),
+          Expanded(child: const TodoList().pSymmetric(h: 15)),
         ],
       ),
     );

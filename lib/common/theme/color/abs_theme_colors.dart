@@ -36,7 +36,9 @@ abstract class AbstractThemeColors {
 
   Color get divider => const Color.fromARGB(255, 228, 228, 228);
 
-  Color get text => AppColors.darkGrey;
+  Color get text => AppColors.veryDarkGrey;
+
+  Color get textFieldBackground => Colors.white;
 
   Color get hintText => AppColors.middleGrey;
 
@@ -53,4 +55,6 @@ abstract class AbstractThemeColors {
   Color get itemBackground => Colors.white;
 
   Color get removeTodoBg => const Color.fromARGB(255, 255, 125, 125);
+
+  Color get textButtonBackground => Colors.orange.shade700;
 }

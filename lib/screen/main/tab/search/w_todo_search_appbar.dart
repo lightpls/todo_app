@@ -37,7 +37,8 @@ class _TodoSearchAppBarState extends State<TodoSearchAppBar> with TodoDataProvid
             controller: widget.controller,
             textInputAction: TextInputAction.search,
             focusNode: node,
-            texthint: '검색어를 입력하세요',
+            leftImage: null,
+            hintText: '검색어를 입력하세요',
             onEditingComplete: () {
               todoData.searchTodo(widget.controller.text);
               widget.controller.text = '';

@@ -35,6 +35,9 @@ class DarkAppColors extends AbstractThemeColors {
   Color get text => Colors.white;
 
   @override
+  Color get textFieldBackground => AppColors.darkGrey;
+
+  @override
   Color get focusedBorder => AppColors.darkGrey;
 
   @override
@@ -45,4 +48,7 @@ class DarkAppColors extends AbstractThemeColors {
 
   @override
   Color get blueButtonBackground => AppColors.blue;
+
+  @override
+  Color get textButtonBackground => Colors.brown.shade700;
 }

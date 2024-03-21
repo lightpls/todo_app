@@ -16,7 +16,7 @@ import '../local/local_db.dart';
 
 class TodoData extends GetxController {
   final RxList<Todo> todoList = <Todo>[].obs;
-  RxList<Todo> searchList = <Todo>[].obs;
+  final RxList<Todo> searchList = <Todo>[].obs;
   RxList<String> searchHistory = <String>[].obs;
   final RxBool isLoaded = false.obs;
 
@@ -106,7 +106,10 @@ class TodoData extends GetxController {
 
   void processResponseResult(
       SimpleResult<void, LocalDBError> result, Todo updatedTodo) {
-    result.runIfSuccess((data) => updateTodo(updatedTodo));
+    result.runIfSuccess((data) {
+      updateTodo(updatedTodo);
+      updateSearchTodo(updatedTodo);
+    });
     result.runIfFailure((error) => MessageDialog(error.message).show());
   }
 
@@ -125,6 +128,15 @@ class TodoData extends GetxController {
     todoList.refresh();
   }
 
+  updateSearchTodo(Todo updatedTodo) {
+    final todo = searchList.firstWhere((element) => element.id == updatedTodo.id);
+    todo
+      ..title = updatedTodo.title
+      ..status = updatedTodo.status
+      ..dueDate = updatedTodo.dueDate;
+
+    searchList.refresh();
+  }
   void searchTodo(String query) async {
     final requestResult = await todoRepository.searchTodo(query);
 

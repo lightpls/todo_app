@@ -7,7 +7,7 @@ import '../common.dart';
 
 class TextFieldWithDelete extends StatefulWidget {
   final Widget? leftImage;
-  final String? texthint;
+  final String? hintText;
   final FocusNode? focusNode;
   final bool obscureText;
   final double deleteRightPadding;
@@ -43,7 +43,7 @@ class TextFieldWithDelete extends StatefulWidget {
       this.hideUnderline = false,
       this.enabled = true,
       this.inputFormatters,
-      this.texthint,
+      this.hintText,
       this.keyboardType,
       this.onEditingComplete,
       this.validatorCallback,
@@ -131,9 +131,10 @@ class TextFieldWithDeleteState extends State<TextFieldWithDelete> {
               onEditingComplete: widget.onEditingComplete,
               style: TextStyle(fontSize: widget.fontSize, fontWeight: widget.fontWeight),
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.only(left: widget.leftImage == null ? 0 : 30, top: 10, bottom: 14),
-                hintText: widget.texthint,
+                contentPadding: const EdgeInsets.only(left: 10, top: 10, bottom: 14),
+                fillColor: context.appColors.textFieldBackground,
+                filled: true,
+                hintText: widget.hintText,
                 hintStyle: TextStyle(
                     fontSize: widget.fontSize,
                     fontWeight: widget.fontWeight,

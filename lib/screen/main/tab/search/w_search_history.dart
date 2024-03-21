@@ -26,8 +26,9 @@ class _SearchHistoryState extends State<SearchHistory> with TodoDataProvider {
                                 widget.controller.text = query;
                               },
                               style: TextButton.styleFrom(
-                                  backgroundColor: Colors.deepPurple),
-                              child: Text(query)))
+                                  backgroundColor: context.appColors.textButtonBackground),
+                              child: Text(query,
+                                  style: TextStyle(color: context.appColors.text))))
                       .pOnly(right: 5))
                   .toList())
           .pOnly(left: 10),
